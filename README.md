@@ -1,5 +1,5 @@
 # Calculatrice-logique-binaire
-On construiT une mini-calculatrice CLI qui :
+On construit une mini-calculatrice CLI qui :
 Convertit un entier en binaire/hexadécimal.
 Accepte deux entiers et applique les opérateurs logiques :
 ET (&)
