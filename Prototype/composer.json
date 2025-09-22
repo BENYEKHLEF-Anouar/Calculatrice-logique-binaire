@@ -1,0 +1,16 @@
+{
+    "name": "anouar/converter-cli",
+    "description": "a prototype of a calculator that converts from decimal to binary and hexadecimal",
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "scripts": {
+        "convert": "php bin/convert.php",
+        "clean": "php -r \"file_put_contents('output.json', ''); echo 'Cleared output.json\\n';\""
+    },
+    "require": {
+        "php": ">=8.2"
+    }
+}
