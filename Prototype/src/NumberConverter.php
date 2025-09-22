@@ -56,19 +56,19 @@ class NumberConverter implements ConverterInterface {
     //     return implode('', array_reverse($hex));
     // }
 
-    public function andOp(int $value): int {
+    public function bitwiseAnd(int $value): int {
         return $this->number & $value;
     }
 
-    public function orOp(int $value): int {
+    public function bitwiseOr(int $value): int {
         return $this->number | $value;
     }
 
-    public function xorOp(int $value): int {
+    public function bitwiseXor(int $value): int {
         return $this->number ^ $value;
     }
 
-    public function notOp(): int {
+    public function bitwiseNot(): int {
         return ~$this->number;
     }
 

@@ -70,16 +70,16 @@ try {
     foreach ($argv as $i => $arg) {
         switch ($arg) {
             case "--and":
-                $results["and"] = $converter->andOp((int) $argv[$i+1]);
+                $results["and"] = $converter->bitwiseAnd((int) $argv[$i+1]);
                 break;
             case "--or":
-                $results["or"] = $converter->orOp((int) $argv[$i+1]);
+                $results["or"] = $converter->bitwiseOr((int) $argv[$i+1]);
                 break;
             case "--xor":
-                $results["xor"] = $converter->xorOp((int) $argv[$i+1]);
+                $results["xor"] = $converter->bitwiseXor((int) $argv[$i+1]);
                 break;
             case "--not":
-                $results["not"] = $converter->notOp();
+                $results["not"] = $converter->bitwiseNot();
                 break;
             case "--shl":
                 $results["shift_left"] = $converter->shiftLeft((int) $argv[$i+1]);
