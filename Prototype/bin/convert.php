@@ -62,9 +62,9 @@ try {
     $converter = new NumberConverter($number);
 
     $results = [
-        "decimal" => $converter->toDecimal(),
-        "binary"  => $converter->toBinary(),
-        "hexa"    => $converter->toHexa(),
+        "Decimal" => $converter->toDecimal(),
+        "Binary"  => $converter->toBinary(),
+        "Hexa"    => $converter->toHexa(),
     ];
 
     foreach ($argv as $i => $arg) {
