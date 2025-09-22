@@ -51,6 +51,7 @@ try {
             throw new Exception("Input JSON must contain a valid 'number' integer");
         }
         $number = $inputData['number'];
+        echo "Input successfully read from input.json" . PHP_EOL;
     } else {
         if (!isset($argv[1]) || !is_numeric($argv[1])) {
             throw new Exception("Invalid number provided. Please provide a numeric value.");
@@ -95,6 +96,7 @@ try {
         if (file_put_contents($outputFile, $jsonOutput) === false) {
             throw new Exception("Failed to write to output.json");
         }
+        echo "Output successfully written to output.json" . PHP_EOL;
     } else {
         foreach ($results as $label => $value) {
             echo $converter->format(ucfirst(str_replace("_", " ", $label)), (string)$value);
