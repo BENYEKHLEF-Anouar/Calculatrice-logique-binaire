@@ -10,12 +10,12 @@ if ($argc < 2) {
     echo "Options:\n";
     echo "  --jsonin            Read input from input.json\n";
     echo "  --jsonout           Output to output.json\n";
-    echo "  --and <n>           Bitwise AND with n\n";
-    echo "  --or <n>            Bitwise OR with n\n";
-    echo "  --xor <n>           Bitwise XOR with n\n";
+    echo "  --and <number>           Bitwise AND with n\n";
+    echo "  --or <number>            Bitwise OR with n\n";
+    echo "  --xor <number>           Bitwise XOR with n\n";
     echo "  --not               Bitwise NOT\n";
-    echo "  --shl <n>           Shift left by n bits\n";
-    echo "  --shr <n>           Shift right by n bits\n";
+    echo "  --shl <number>           Shift left by n bits\n";
+    echo "  --shr <number>           Shift right by n bits\n";
     exit(1);
 }
 
@@ -25,11 +25,11 @@ if (in_array('--help', $argv, true)) {
     echo "  --jsonin            Read input from input.json\n";
     echo "  --jsonout           Output to output.json\n";
     echo "  --and <number>           Bitwise AND with n\n";
-    echo "  --or <n>            Bitwise OR with n\n";
-    echo "  --xor <n>           Bitwise XOR with n\n";
+    echo "  --or <number>            Bitwise OR with n\n";
+    echo "  --xor <number>           Bitwise XOR with n\n";
     echo "  --not               Bitwise NOT\n";
-    echo "  --shl <n>           Shift left by n bits\n";
-    echo "  --shr <n>           Shift right by n bits\n";
+    echo "  --shl <number>           Shift left by n bits\n";
+    echo "  --shr <number>           Shift right by n bits\n";
     exit(0);
 }
 
@@ -64,7 +64,7 @@ try {
     $results = [
         "Decimal" => $converter->toDecimal(),
         "Binary"  => $converter->toBinary(),
-        "Hexa"    => $converter->toHexa(),
+        "Hexadecimal"    => $converter->toHexa(),
     ];
 
     foreach ($argv as $i => $arg) {
