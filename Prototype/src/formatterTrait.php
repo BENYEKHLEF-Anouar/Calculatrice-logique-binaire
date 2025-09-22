@@ -1,5 +1,5 @@
 <?php
-// trait
+
 namespace App;
 
 trait FormatterTrait {
