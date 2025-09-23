@@ -18,7 +18,7 @@ A PHP command-line interface (CLI) tool for converting numbers between decimal, 
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/number-converter-cli.git
+   git clone https://github.com/BENYEKHLEF-Anouar/Calculatrice-logique-binaire.git
    cd number-converter-cli
    ```
 2. Install Composer dependencies:
