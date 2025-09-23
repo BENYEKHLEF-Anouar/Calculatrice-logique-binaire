@@ -1,141 +1,150 @@
-# Number Converter CLI
+# Calculatrice Logique Binaire CLI
 
-A PHP command-line interface (CLI) tool for converting numbers between decimal, binary, and hexadecimal formats, and performing various bitwise operations.
+Une interface en ligne de commande (CLI) PHP pour convertir des nombres entre les formats décimal, binaire et hexadécimal, et effectuer diverses opérations logiques binaires.
 
-## Features
+## Fonctionnalités
 
-- Convert decimal numbers to binary and hexadecimal.
-- Perform bitwise AND, OR, XOR, NOT operations.
-- Perform bitwise left and right shifts.
-- Read input from command-line arguments or a `input.json` file.
-- Output results to the console or a `output.json` file.
+- Convertit un entier en binaire/hexadécimal.
+- Accepte deux entiers et applique les opérateurs logiques : ET (`&`), OU (`|`), XOR (`^`), NON (`~`), Décalage à gauche (`<<`), Décalage à droite (`>>`).
+- Affiche un tableau clair des résultats.
+- Valide les entrées (entiers positifs) et gère les erreurs.
+- Lecture de l'entrée depuis les arguments de la ligne de commande ou un fichier `input.json`.
+- Sortie des résultats vers la console ou un fichier `output.json`.
 
-## Requirements
+## Prérequis
 
 - PHP >= 8.2
 
 ## Installation
 
-1. Clone the repository:
+1. Cloner le dépôt :
    ```bash
    git clone https://github.com/BENYEKHLEF-Anouar/Calculatrice-logique-binaire.git
-   cd number-converter-cli
+   cd Calculatrice-logique-binaire/Realisation
    ```
-2. Install Composer dependencies:
+2. Installer les dépendances Composer :
    ```bash
    composer install
    ```
 
-## Usage
+## Utilisation
 
-The main script is `bin/convert.php`. You can run it using `php bin/convert.php`.
+Le script principal est `bin/calc.php`. Vous pouvez l'exécuter en utilisant `php bin/calc.php`.
 
-### Basic Conversion
+### Opérations de base
 
-To convert a number and see its decimal, binary, and hexadecimal representations:
-
-```bash
-php bin/convert.php 42
-```
-
-Output:
-```
-Decimal     : 42
-Binary      : 101010
-Hexa        : 2A
-```
-
-### Bitwise Operations
-
-You can perform bitwise operations using the following options:
-
-- `--and <n>`: Bitwise AND with `n`
-- `--or <n>`: Bitwise OR with `n`
-- `--xor <n>`: Bitwise XOR with `n`
-- `--not`: Bitwise NOT
-- `--shl <n>`: Shift left by `n` bits
-- `--shr <n>`: Shift right by `n` bits
-
-Example with bitwise AND and NOT:
+Pour effectuer des opérations logiques binaires :
 
 ```bash
-php bin/convert.php 42 --and 15 --not
+php bin/calc.php <nombre1> [opérateur] [<nombre2>]
 ```
 
-Example with shift left:
+**Opérateurs disponibles :**
+- `&` (ET) : Opération ET binaire avec `nombre2`
+- `|` (OU) : Opération OU binaire avec `nombre2`
+- `^` (XOR) : Opération XOR binaire avec `nombre2`
+- `~` (NON) : Opération NON binaire (unaire, s'applique à `nombre1`)
+- `<<` (SHL) : Décalage à gauche de `nombre1` par `nombre2` bits
+- `>>` (SHR) : Décalage à droite de `nombre1` par `nombre2` bits
+
+**Exemples :**
+
+**1. Opérations binaires multiples (sans opérateur explicite) :**
+Si deux nombres sont fournis sans opérateur, les opérations ET, OU, XOR et NON sont effectuées par défaut.
 
 ```bash
-composer convert --shiftleft
-# This uses the script defined in composer.json: "shiftleft": "php bin/convert.php 42 --shl"
+php bin/calc.php 5 3
 ```
 
-Example with shift right:
+Sortie :
+```
+Entrée A : 5 (101)
+Entrée B : 3 (011)
+
+A ET B : 1 (001)
+A OU B : 7 (111)
+A XOR B: 6 (110)
+NON A : -6 (11111111111111111111111111111010)
+```
+
+**2. Opération spécifique avec opérateur :**
 
 ```bash
-composer convert --shiftright
-# This uses the script defined in composer.json: "shiftright": "php bin/convert.php 42 --shr"
+php bin/calc.php 5 & 3
 ```
 
-### JSON Input/Output
+Sortie :
+```
+Entrée A : 5 (101)
+Entrée B : 3 (011)
 
-#### Reading from `input.json`
-
-Create an `input.json` file in the project root with the following format:
-
-```json
-{
-  "number": 42
-}
+A ET B : 1 (001)
 ```
 
-Then run the converter with the `--jsonin` option:
+**3. Opération NON (unaire) :**
 
 ```bash
-php bin/convert.php --jsonin
+php bin/calc.php 5 ~
 ```
 
-#### Writing to `output.json`
+Sortie :
+```
+Entrée A : 5 (101)
 
-To save the results to an `output.json` file, use the `--jsonout` option:
+NON A : -6 (11111111111111111111111111111010)
+```
+
+### Entrée/Sortie JSON
+
+#### Lecture depuis `input.json`
+
+Un exemple de fichier d'entrée JSON est disponible à [`samples/input.json`](Realisation/samples/input.json).
+Pour l'utiliser, exécutez le script avec l'option `--jsonin` :
 
 ```bash
-php bin/convert.php 42 --jsonout
+php bin/calc.php --jsonin
 ```
 
-The `output.json` file will contain:
+#### Écriture vers `output.json`
 
-```json
-{
-    "decimal": 42,
-    "binary": "101010",
-    "hexa": "2A"
-}
-```
-
-You can also combine JSON input and output:
+Pour enregistrer les résultats dans un fichier `output.json`, utilisez l'option `--jsonout` :
 
 ```bash
-php bin/convert.php --jsonin --jsonout --and 15
+php bin/calc.php 5 & 3 --jsonout
 ```
 
-### Cleaning Output
+Un exemple de fichier de sortie JSON est disponible à [`samples/output.json`](Realisation/samples/output.json).
 
-To clear the `output.json` file:
+Vous pouvez également combiner l'entrée et la sortie JSON :
 
 ```bash
-composer clean
+php bin/calc.php --jsonin --jsonout
 ```
 
-## Project Structure
+### Scripts Composer
 
-- `bin/convert.php`: The main executable script.
-- `src/ConverterInterface.php`: Interface for number conversion.
-- `src/NumberConverter.php`: Implements `ConverterInterface` and provides conversion and bitwise logic.
-- `src/formatterTrait.php`: A trait for formatting output strings.
-- `composer.json`: Project dependencies and scripts.
-- `input.json`: Example file for JSON input.
-- `output.json`: File for JSON output.
+Les scripts Composer suivants sont disponibles pour faciliter le développement :
 
-## License
+- `composer build`: Affiche "Build process complete."
+- `composer validate`: Exécute les vérifications de lint PHP sur tous les fichiers PHP pertinents dans `bin/` et `src/`.
+- `composer save`: Exécute le script `validate` puis affiche "Saving current state...".
+- `composer calc`: Exécute le script `bin/calc.php`.
+- `composer clean`: Efface le contenu du fichier `output.json`.
+- `composer help`: Affiche l'aide du script `bin/calc.php`.
 
-This project is licensed under the MIT License - see the [LICENECE.md](LICENECE.md) file for details.
+## Structure du projet
+
+- `bin/calc.php`: Le script exécutable principal.
+- `src/Calculator.php`: Gère les opérations logiques binaires.
+- `src/ConverterInterface.php`: Interface pour la conversion de nombres.
+- `src/NumberConverter.php`: Implémente `ConverterInterface` et fournit la logique de conversion.
+- `src/formatterTrait.php`: Un trait pour formater les chaînes de sortie.
+- `composer.json`: Dépendances et scripts du projet.
+- `input.json`: Fichier par défaut pour l'entrée JSON (peut être utilisé directement).
+- `output.json`: Fichier par défaut pour la sortie JSON (peut être utilisé directement).
+- `samples/input.json`: Exemple de fichier pour l'entrée JSON.
+- `samples/output.json`: Exemple de fichier pour la sortie JSON.
+
+## Licence
+
+Ce projet est sous licence MIT - voir le fichier [LICENSE.md](LICENSE.md) pour plus de détails.

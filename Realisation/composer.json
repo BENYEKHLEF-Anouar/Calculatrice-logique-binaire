@@ -7,9 +7,22 @@
         }
     },
     "scripts": {
-        "convert": "php bin/convert.php",
+        "build": "echo 'Build process complete.'",
+        "validate": [
+            "@php -l bin/calc.php",
+            "@php -l src/Calculator.php",
+            "@php -l src/ConverterInterface.php",
+            "@php -l src/formatterTrait.php",
+            "@php -l src/NumberConverter.php"
+        ],
+        "save": [
+            "@validate",
+            "echo 'Saving current state...'"
+        ],
+        "calc": "php bin/calc.php",
         "clean": "php -r \"file_put_contents('output.json', ''); echo 'Cleared output.json\\n';\"",
-        "help": "php bin/convert.Php --help"
+        "help": "php bin/calc.php --help",
+        "generate-samples": "php bin/calc.php 5 & 3 --jsonout > samples/output.json && php -r \"file_put_contents('samples/input.json', json_encode(['number' => 5, 'operator' => '&', 'number2' => 3], JSON_PRETTY_PRINT));\""
     },
     "require": {
         "php": ">=8.2"
