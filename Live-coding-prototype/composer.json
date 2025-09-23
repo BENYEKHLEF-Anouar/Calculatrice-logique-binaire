@@ -8,7 +8,8 @@
     },
     "scripts": {
         "convert": "php bin/convert.php",
-        "clean": "php -r \"file_put_contents('output.json', ''); echo 'Cleared output.json\\n';\""
+        "clean": "php -r \"file_put_contents('output.json', ''); echo 'Cleared output.json\\n';\"",
+        "help": "php bin/convert.Php --help"
     },
     "require": {
         "php": ">=8.2"
