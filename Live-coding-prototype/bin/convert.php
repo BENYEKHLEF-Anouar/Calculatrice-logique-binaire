@@ -62,8 +62,8 @@ try {
     $converter = new NumberConverter($number);
 
     $results = [
-        "Decimal" => $converter->toDecimal(),
-        "Binary"  => $converter->toBinary(),
+        "Decimal"        => $converter->toDecimal(),
+        "Binary"         => $converter->toBinary(),
         "Hexadecimal"    => $converter->toHexa(),
     ];
 
