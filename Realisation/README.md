@@ -36,7 +36,7 @@ Le script principal est `bin/calc.php`. Vous pouvez l'exécuter en utilisant `ph
 Pour effectuer des opérations logiques binaires :
 
 ```bash
-php bin/calc.php <nombre1> [opérateur] [<nombre2>]
+php bin/calc.php <nombre1> ["opérateur"] [<nombre2>]
 ```
 
 **Opérateurs disponibles :**
@@ -46,6 +46,15 @@ php bin/calc.php <nombre1> [opérateur] [<nombre2>]
 - `~` (NON) : Opération NON binaire (unaire, s'applique à `nombre1`)
 - `<<` (SHL) : Décalage à gauche de `nombre1` par `nombre2` bits
 - `>>` (SHR) : Décalage à droite de `nombre1` par `nombre2` bits
+
+**Note sur les opérateurs spéciaux :**
+Certains opérateurs comme `&`, `|`, `^`, `<<`, `>>` peuvent avoir une signification spéciale dans votre shell (par exemple, `&` pour exécuter en arrière-plan). Pour vous assurer qu'ils sont passés correctement au script PHP, il est recommandé de les entourer de guillemets (simples ou doubles) ou de les échapper.
+
+Exemple :
+```bash
+php bin/calc.php 5 "&" 3
+
+```
 
 **Exemples :**
 
@@ -77,7 +86,7 @@ NON A : -6 (11111111111111111111111111111010)
 **2. Opération spécifique avec opérateur :**
 
 ```bash
-php bin/calc.php 5 & 3
+php bin/calc.php 5 "&" 3
 ```
 
 Sortie :
@@ -91,7 +100,7 @@ A ET B : 1 (001)
 **3. Opération OU :**
 
 ```bash
-php bin/calc.php 5 | 3
+php bin/calc.php 5 "|" 3
 ```
 
 Sortie :
@@ -105,7 +114,7 @@ A OU B : 7 (111)
 **4. Opération XOR :**
 
 ```bash
-php bin/calc.php 5 ^ 3
+php bin/calc.php 5 "^" 3
 ```
 
 Sortie :
@@ -119,7 +128,7 @@ A XOR B: 6 (110)
 **5. Opération Décalage à gauche (SHL) :**
 
 ```bash
-php bin/calc.php 5 << 1
+php bin/calc.php 5 "<<" 1
 ```
 
 Sortie :
@@ -133,7 +142,7 @@ A SHL B: 10 (1010)
 **6. Opération Décalage à droite (SHR) :**
 
 ```bash
-php bin/calc.php 5 >> 1
+php bin/calc.php 5 ">>" 1
 ```
 
 Sortie :
@@ -144,7 +153,7 @@ Entrée B : 1 (001)
 A SHR B: 2 (10)
 ```
 
-**3. Opération NON (unaire) :**
+**7. Opération NON (unaire) :**
 
 ```bash
 php bin/calc.php 5 ~
@@ -165,6 +174,17 @@ NON A : -6 (11111111111111111111111111111010)
 #### Lecture depuis `samples/input.json`
 
 Un exemple de fichier d'entrée JSON est disponible à [`samples/input.json`](Realisation/samples/input.json).
+Il peut contenir les champs `number` (obligatoire), `operator` (optionnel) et `number2` (optionnel, requis si `operator` est binaire).
+
+Exemple de `samples/input.json`:
+```json
+{
+  "number": 5,
+  "operator": "&",
+  "number2": 3
+}
+```
+
 Pour l'utiliser, exécutez le script avec l'option `--jsonin` :
 
 ```bash
@@ -176,7 +196,7 @@ php bin/calc.php --jsonin
 Pour enregistrer les résultats dans un fichier `samples/output.json`, utilisez l'option `--jsonout` :
 
 ```bash
-php bin/calc.php 5 & 3 --jsonout
+php bin/calc.php 5 "&" 3 --jsonout
 ```
 
 Un exemple de fichier de sortie JSON est disponible à [`samples/output.json`](Realisation/samples/output.json).
