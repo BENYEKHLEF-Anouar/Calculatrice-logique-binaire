@@ -65,15 +65,13 @@ php bin/convert.php 42 --and 15 --not
 Example with shift left:
 
 ```bash
-composer convert --shiftleft
-# This uses the script defined in composer.json: "shiftleft": "php bin/convert.php 42 --shl"
+php bin/convert.php 42 --shl 2
 ```
 
 Example with shift right:
 
 ```bash
-composer convert --shiftright
-# This uses the script defined in composer.json: "shiftright": "php bin/convert.php 42 --shr"
+php bin/convert.php 42 --shr 2
 ```
 
 ### JSON Input/Output
