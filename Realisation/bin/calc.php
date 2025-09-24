@@ -34,23 +34,23 @@ try {
     }));
 
     if ($isJsonIn) {
-        $inputFile = 'input.json';
+        $inputFile = 'samples/input.json';
         if (!file_exists($inputFile)) {
-            throw new Exception("Input file input.json not found");
+            throw new Exception("Input file samples/input.json not found");
         }
         $jsonInput = file_get_contents($inputFile);
         $inputData = json_decode($jsonInput, true);
         if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new Exception("Invalid JSON in input.json");
+            throw new Exception("Invalid JSON in samples/input.json");
         }
         if (!isset($inputData['number']) || !is_int($inputData['number'])) {
-            throw new Exception("Input JSON must contain a valid 'number' integer");
+            throw new Exception("Input JSON must contain a valid 'number' integer in samples/input.json");
         }
         $number1 = $inputData['number'];
         if ($number1 < 0) {
-            throw new Exception("Input JSON 'number' must be a positive integer.");
+            throw new Exception("Input JSON 'number' must be a positive integer in samples/input.json.");
         }
-        echo "Input successfully read from input.json" . PHP_EOL;
+        echo "Input successfully read from samples/input.json" . PHP_EOL;
         // Remove the script name and --jsonin from args for further parsing
         array_shift($args); // remove script name
     } else {
@@ -156,19 +156,27 @@ try {
     }
 
     if ($isJsonOut) {
-        $outputFile = 'output.json';
+        $outputFile = 'samples/output.json';
         $jsonOutput = json_encode($results, JSON_PRETTY_PRINT);
         if (file_put_contents($outputFile, $jsonOutput) === false) {
-            throw new Exception("Failed to write to output.json");
+            throw new Exception("Failed to write to samples/output.json");
         }
-        echo "Output successfully written to output.json" . PHP_EOL;
+        echo "Output successfully written to samples/output.json" . PHP_EOL;
     } else {
-        echo "Entrée A : " . $number1 . " (" . $numberConverter1->toBinary() . ")" . PHP_EOL;
+        echo "Entrée A : " . $number1 . PHP_EOL;
+        echo "Decimal     : " . $numberConverter1->toDecimal() . PHP_EOL;
+        echo "Binary      : " . $numberConverter1->toBinary() . PHP_EOL;
+        echo "Hexadecimal : " . $numberConverter1->toHexa() . PHP_EOL;
+        echo PHP_EOL;
+
         if ($number2 !== null) {
             $numberConverter2 = new NumberConverter($number2);
-            echo "Entrée B : " . $number2 . " (" . $numberConverter2->toBinary() . ")" . PHP_EOL;
+            echo "Entrée B : " . $number2 . PHP_EOL;
+            echo "Decimal     : " . $numberConverter2->toDecimal() . PHP_EOL;
+            echo "Binary      : " . $numberConverter2->toBinary() . PHP_EOL;
+            echo "Hexadecimal : " . $numberConverter2->toHexa() . PHP_EOL;
+            echo PHP_EOL;
         }
-        echo PHP_EOL;
 
         $output = [];
         if (isset($results["AND"])) {

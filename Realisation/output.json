@@ -1,5 +1,6 @@
 {
-    "decimal": 65,
-    "binary": "1000001",
-    "hexa": "41"
+    "Decimal": 990,
+    "Binary": "1111011110",
+    "Hexadecimal": "3DE",
+    "NOT": -991
 }

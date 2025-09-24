@@ -20,9 +20,9 @@
             "echo 'Saving current state...'"
         ],
         "calc": "php bin/calc.php",
-        "clean": "php -r \"file_put_contents('output.json', ''); echo 'Cleared output.json\\n';\"",
+        "clean": "php -r \"file_put_contents('samples/output.json', ''); echo 'Cleared samples/output.json\\n';\"",
         "help": "php bin/calc.php --help",
-        "generate-samples": "php bin/calc.php 5 & 3 --jsonout > samples/output.json && php -r \"file_put_contents('samples/input.json', json_encode(['number' => 5, 'operator' => '&', 'number2' => 3], JSON_PRETTY_PRINT));\""
+        "generate-samples": "php bin/calc.php 5 & 3 --jsonout && php -r \"file_put_contents('samples/input.json', json_encode(['number' => 5, 'operator' => '&', 'number2' => 3], JSON_PRETTY_PRINT));\""
     },
     "require": {
         "php": ">=8.2"

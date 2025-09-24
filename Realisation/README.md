@@ -8,8 +8,8 @@ Une interface en ligne de commande (CLI) PHP pour convertir des nombres entre le
 - Accepte deux entiers et applique les opérateurs logiques : ET (`&`), OU (`|`), XOR (`^`), NON (`~`), Décalage à gauche (`<<`), Décalage à droite (`>>`).
 - Affiche un tableau clair des résultats.
 - Valide les entrées (entiers positifs) et gère les erreurs.
-- Lecture de l'entrée depuis les arguments de la ligne de commande ou un fichier `input.json`.
-- Sortie des résultats vers la console ou un fichier `output.json`.
+- Lecture de l'entrée depuis les arguments de la ligne de commande ou un fichier `samples/input.json`.
+- Sortie des résultats vers la console ou un fichier `samples/output.json`.
 
 ## Prérequis
 
@@ -58,8 +58,15 @@ php bin/calc.php 5 3
 
 Sortie :
 ```
-Entrée A : 5 (101)
-Entrée B : 3 (011)
+Entrée A : 5
+Decimal     : 5
+Binary      : 101
+Hexadecimal : 5
+
+Entrée B : 3
+Decimal     : 3
+Binary      : 11
+Hexadecimal : 3
 
 A ET B : 1 (001)
 A OU B : 7 (111)
@@ -81,6 +88,62 @@ Entrée B : 3 (011)
 A ET B : 1 (001)
 ```
 
+**3. Opération OU :**
+
+```bash
+php bin/calc.php 5 | 3
+```
+
+Sortie :
+```
+Entrée A : 5 (101)
+Entrée B : 3 (011)
+
+A OU B : 7 (111)
+```
+
+**4. Opération XOR :**
+
+```bash
+php bin/calc.php 5 ^ 3
+```
+
+Sortie :
+```
+Entrée A : 5 (101)
+Entrée B : 3 (011)
+
+A XOR B: 6 (110)
+```
+
+**5. Opération Décalage à gauche (SHL) :**
+
+```bash
+php bin/calc.php 5 << 1
+```
+
+Sortie :
+```
+Entrée A : 5 (101)
+Entrée B : 1 (001)
+
+A SHL B: 10 (1010)
+```
+
+**6. Opération Décalage à droite (SHR) :**
+
+```bash
+php bin/calc.php 5 >> 1
+```
+
+Sortie :
+```
+Entrée A : 5 (101)
+Entrée B : 1 (001)
+
+A SHR B: 2 (10)
+```
+
 **3. Opération NON (unaire) :**
 
 ```bash
@@ -89,14 +152,17 @@ php bin/calc.php 5 ~
 
 Sortie :
 ```
-Entrée A : 5 (101)
+Entrée A : 5
+Decimal     : 5
+Binary      : 101
+Hexadecimal : 5
 
 NON A : -6 (11111111111111111111111111111010)
 ```
 
 ### Entrée/Sortie JSON
 
-#### Lecture depuis `input.json`
+#### Lecture depuis `samples/input.json`
 
 Un exemple de fichier d'entrée JSON est disponible à [`samples/input.json`](Realisation/samples/input.json).
 Pour l'utiliser, exécutez le script avec l'option `--jsonin` :
@@ -105,9 +171,9 @@ Pour l'utiliser, exécutez le script avec l'option `--jsonin` :
 php bin/calc.php --jsonin
 ```
 
-#### Écriture vers `output.json`
+#### Écriture vers `samples/output.json`
 
-Pour enregistrer les résultats dans un fichier `output.json`, utilisez l'option `--jsonout` :
+Pour enregistrer les résultats dans un fichier `samples/output.json`, utilisez l'option `--jsonout` :
 
 ```bash
 php bin/calc.php 5 & 3 --jsonout
@@ -129,7 +195,7 @@ Les scripts Composer suivants sont disponibles pour faciliter le développement 
 - `composer validate`: Exécute les vérifications de lint PHP sur tous les fichiers PHP pertinents dans `bin/` et `src/`.
 - `composer save`: Exécute le script `validate` puis affiche "Saving current state...".
 - `composer calc`: Exécute le script `bin/calc.php`.
-- `composer clean`: Efface le contenu du fichier `output.json`.
+- `composer clean`: Efface le contenu du fichier `samples/output.json`.
 - `composer help`: Affiche l'aide du script `bin/calc.php`.
 
 ## Structure du projet
@@ -140,10 +206,8 @@ Les scripts Composer suivants sont disponibles pour faciliter le développement 
 - `src/NumberConverter.php`: Implémente `ConverterInterface` et fournit la logique de conversion.
 - `src/formatterTrait.php`: Un trait pour formater les chaînes de sortie.
 - `composer.json`: Dépendances et scripts du projet.
-- `input.json`: Fichier par défaut pour l'entrée JSON (peut être utilisé directement).
-- `output.json`: Fichier par défaut pour la sortie JSON (peut être utilisé directement).
-- `samples/input.json`: Exemple de fichier pour l'entrée JSON.
-- `samples/output.json`: Exemple de fichier pour la sortie JSON.
+- `samples/input.json`: Fichier par défaut pour l'entrée JSON.
+- `samples/output.json`: Fichier par défaut pour la sortie JSON.
 
 ## Licence
 
