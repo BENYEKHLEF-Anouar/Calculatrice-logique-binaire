@@ -29,6 +29,8 @@ try {
     $operator = null;
     $number2 = null;
 
+// Removes the flags --jsonin and --jsonout from $argv.
+// Leaves only the script name and the actual numbers/operators
     $args = array_values(array_filter($argv, function($arg) {
         return !in_array($arg, ["--jsonin", "--jsonout"]);
     }));
@@ -52,7 +54,7 @@ try {
         }
         echo "Input successfully read from samples/input.json" . PHP_EOL;
         // Remove the script name and --jsonin from args for further parsing
-        array_shift($args); // remove script name
+        array_shift($args); // remove script name (the first index)
     } else {
         // Parse number1
         if (!isset($args[1]) || !is_numeric($args[1])) {
@@ -199,7 +201,8 @@ try {
             $output[] = "A SHR B: " . $results["Shift Right"] . " (" . decbin($results["Shift Right"]) . ")";
         }
 
-        echo implode(PHP_EOL, $output) . PHP_EOL;
+        // Joins all elements of $output into a single string.
+        echo implode(PHP_EOL, $output) . PHP_EOL; 
     }
     
 } catch (Throwable $e) {
