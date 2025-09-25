@@ -40,14 +40,37 @@ try {
         if (!file_exists($inputFile)) {
             throw new Exception("Input file samples/input.txt not found");
         }
-        $number1 = (int) file_get_contents($inputFile);
+        $fileContent = file_get_contents($inputFile);
+        $inputData = json_decode($fileContent, true);
+        // error_log("DEBUG: inputData: " . print_r($inputData, true)); // Debugging line
+
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new Exception("Invalid JSON in samples/input.txt: " . json_last_error_msg());
+        }
+
+        if (!isset($inputData['number']) || !is_numeric($inputData['number'])) {
+            throw new Exception("Missing or invalid 'number' in samples/input.txt.");
+        }
+        $number1 = (int) $inputData['number'];
         if ($number1 < 0) {
             throw new Exception("Input file 'number' must be a positive integer in samples/input.txt.");
         }
+
+        $operator = $inputData['operator'] ?? null;
+        $number2 = $inputData['number2'] ?? null;
+
+        if ($number2 !== null) { // Only validate if number2 is actually present
+            if (!is_numeric($number2)) {
+                throw new Exception("Invalid 'number2' in samples/input.txt. Must be a numeric value.");
+            }
+            $number2 = (int) $number2;
+            if ($number2 < 0) {
+                throw new Exception("Input file 'number2' must be a positive integer in samples/input.txt.");
+            }
+        }
         echo "Input successfully read from samples/input.txt" . PHP_EOL;
-        // Remove the script name and --txtin from args for further parsing
-        array_shift($args); // remove script name (the first index)
-    } else {
+        error_log("DEBUG: number1: " . $number1 . ", operator: " . $operator . ", number2: " . $number2); // Debugging line
+    } else { // Only parse command line arguments if --txtin is not present
         // Parse number1
         if (!isset($args[1]) || !is_numeric($args[1])) {
             throw new Exception("Invalid number provided. Please provide a numeric value for number1.");
@@ -99,6 +122,7 @@ try {
     if ($number1 === null) {
         throw new Exception("A primary number (number1) is required.");
     }
+    // error_log("DEBUG: Before Calculator/NumberConverter instantiation - number1: " . $number1 . ", operator: " . $operator . ", number2: " . $number2); // Debugging line
 
     $calculator = new Calculator($number1, $number2);
     $numberConverter1 = new NumberConverter($number1);

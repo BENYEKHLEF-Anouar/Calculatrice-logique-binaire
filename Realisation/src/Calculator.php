@@ -9,7 +9,7 @@ class Calculator {
     use FormatterTrait;
 
     private int $number1;
-    private ?int $number2;
+    private ?int $number2; //integer or null
 
     public function __construct(int $number1, ?int $number2 = null) {
         $this->number1 = $number1;
@@ -49,12 +49,12 @@ class Calculator {
         return ~$this->number1;
     }
 
-    public function getConversions(int $number): array {
-        $converter = new NumberConverter($number);
-        return [
-            "Decimal" => $converter->toDecimal(),
-            "Binary" => $converter->toBinary(),
-            "Hexadecimal" => $converter->toHexa(),
-        ];
-    }
+    // public function getConversions(int $number): array {
+    //     $converter = new NumberConverter($number);
+    //     return [
+    //         "Decimal" => $converter->toDecimal(),
+    //         "Binary" => $converter->toBinary(),
+    //         "Hexadecimal" => $converter->toHexa(),
+    //     ];
+    // }
 }

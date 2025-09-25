@@ -20,8 +20,7 @@
         ],
         "save": [
             "@validate",
-            "php -r \"$input = trim(file_get_contents('samples/input.txt')); passthru('php bin/calc.php ' . $input . ' --json > samples/output.json');\"",
-            "echo 'Saving current state...'"
+            "php bin/calc.php --jsonout"
         ],
         "calc": "php bin/calc.php",
         "clean": "php -r \"file_put_contents('samples/output.json', ''); echo 'Cleared samples/output.json\\n';\"",
