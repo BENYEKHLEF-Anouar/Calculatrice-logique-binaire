@@ -24,7 +24,7 @@
         ],
         "calc": "php bin/calc.php",
         "clean": "php -r \"file_put_contents('samples/output.json', ''); echo 'Cleared samples/output.json\\n';\"",
-        "generate-samples": "php bin/calc.php 5 & 3 --jsonout && php -r \"file_put_contents('samples/input.txt', '5');\""
+        "test": "php bin/calc.php --txtin"
     },
     "require": {
         "php": ">=8.2"

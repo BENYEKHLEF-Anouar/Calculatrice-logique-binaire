@@ -3,7 +3,7 @@
 namespace App;
 
 use App\FormatterTrait;
-use App\NumberConverter;
+// use App\NumberConverter;
 
 class Calculator {
     use FormatterTrait;
