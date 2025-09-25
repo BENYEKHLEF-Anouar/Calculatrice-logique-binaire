@@ -16,44 +16,62 @@ if ($argc < 2 || in_array('--help', $argv, true)) {
     echo "  << (SHL)            Shift left by number2 bits\n";
     echo "  >> (SHR)            Shift right by number2 bits\n";
     echo "Options:\n";
-    echo "  --jsonin            Read input from input.json\n";
+    echo "  --txtin             Read input from input.txt\n";
     echo "  --jsonout           Output to output.json\n";
     exit(0);
 }
 
 try {
-    $isJsonIn = in_array("--jsonin", $argv, true);
+    $isTxtIn = in_array("--txtin", $argv, true);
     $isJsonOut = in_array("--jsonout", $argv, true);
 
     $number1 = null;
     $operator = null;
     $number2 = null;
 
+// Removes the flags --jsonin and --jsonout from $argv.
+// Leaves only the script name and the actual numbers/operators
     $args = array_values(array_filter($argv, function($arg) {
-        return !in_array($arg, ["--jsonin", "--jsonout"]);
+        return !in_array($arg, ["--txtin", "--jsonout"]);
     }));
 
-    if ($isJsonIn) {
-        $inputFile = 'samples/input.json';
+    if ($isTxtIn) {
+        $inputFile = 'samples/input.txt';
         if (!file_exists($inputFile)) {
-            throw new Exception("Input file samples/input.json not found");
+            throw new Exception("Input file samples/input.txt not found");
         }
-        $jsonInput = file_get_contents($inputFile);
-        $inputData = json_decode($jsonInput, true);
+        $fileContent = file_get_contents($inputFile);
+        $inputData = json_decode($fileContent, true);
+        // error_log("DEBUG: inputData: " . print_r($inputData, true)); // Debugging line
+
         if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new Exception("Invalid JSON in samples/input.json");
+            throw new Exception("Invalid JSON in samples/input.txt: " . json_last_error_msg());
         }
-        if (!isset($inputData['number']) || !is_int($inputData['number'])) {
-            throw new Exception("Input JSON must contain a valid 'number' integer in samples/input.json");
+
+        if (!isset($inputData['number']) || !is_numeric($inputData['number'])) {
+            throw new Exception("Missing or invalid 'number' in samples/input.txt.");
         }
-        $number1 = $inputData['number'];
+        $number1 = (int) $inputData['number'];
         if ($number1 < 0) {
-            throw new Exception("Input JSON 'number' must be a positive integer in samples/input.json.");
+            throw new Exception("Input file 'number' must be a positive integer in samples/input.txt.");
         }
-        echo "Input successfully read from samples/input.json" . PHP_EOL;
-        // Remove the script name and --jsonin from args for further parsing
-        array_shift($args); // remove script name
-    } else {
+
+        $operator = $inputData['operator'] ?? null;
+        $number2 = $inputData['number2'] ?? null;
+
+        if ($number2 !== null) { // Only validate if number2 is actually present
+            if (!is_numeric($number2)) {
+                throw new Exception("Invalid 'number2' in samples/input.txt. Must be a numeric value.");
+            }
+            $number2 = (int) $number2;
+            if ($number2 < 0) {
+                throw new Exception("Input file 'number2' must be a positive integer in samples/input.txt.");
+            }
+        }
+        echo "Input successfully read from samples/input.txt" . PHP_EOL;
+        error_log("DEBUG: number1: " . $number1 . ", operator: " . $operator . ", number2: " . $number2); // Debugging line
+
+    } else { // Only parse command line arguments if --txtin is not present
         // Parse number1
         if (!isset($args[1]) || !is_numeric($args[1])) {
             throw new Exception("Invalid number provided. Please provide a numeric value for number1.");
@@ -83,6 +101,7 @@ try {
                 } else {
                     throw new Exception("Invalid argument: " . $args[0]);
                 }
+
             } else if (count($args) >= 2) {
                 // If there are two or more arguments, assume operator and number2
                 $operator = $args[0];
@@ -105,6 +124,7 @@ try {
     if ($number1 === null) {
         throw new Exception("A primary number (number1) is required.");
     }
+    // error_log("DEBUG: Before Calculator/NumberConverter instantiation - number1: " . $number1 . ", operator: " . $operator . ", number2: " . $number2); // Debugging line
 
     $calculator = new Calculator($number1, $number2);
     $numberConverter1 = new NumberConverter($number1);
@@ -144,6 +164,7 @@ try {
             default:
                 throw new Exception("Unknown operator: " . $operator);
         }
+
     } else if ($number2 !== null) {
         // If no operator is specified but two numbers are provided, perform all binary operations
         $results["AND"] = $calculator->bitwiseAnd();
@@ -162,44 +183,55 @@ try {
             throw new Exception("Failed to write to samples/output.json");
         }
         echo "Output successfully written to samples/output.json" . PHP_EOL;
+        
     } else {
-        echo "Entrée A : " . $number1 . PHP_EOL;
-        echo "Decimal     : " . $numberConverter1->toDecimal() . PHP_EOL;
-        echo "Binary      : " . $numberConverter1->toBinary() . PHP_EOL;
-        echo "Hexadecimal : " . $numberConverter1->toHexa() . PHP_EOL;
+        // Output for Number 1
+        echo $calculator->formatTableHeader(["Entrée A", $number1]);
+        echo $calculator->formatTableRow(["Decimal", $numberConverter1->toDecimal()]);
+        echo $calculator->formatTableRow(["Binary", $numberConverter1->toBinary()]);
+        echo $calculator->formatTableRow(["Hexadecimal", $numberConverter1->toHexa()]);
         echo PHP_EOL;
 
+        // Output for Number 2 if available
         if ($number2 !== null) {
             $numberConverter2 = new NumberConverter($number2);
-            echo "Entrée B : " . $number2 . PHP_EOL;
-            echo "Decimal     : " . $numberConverter2->toDecimal() . PHP_EOL;
-            echo "Binary      : " . $numberConverter2->toBinary() . PHP_EOL;
-            echo "Hexadecimal : " . $numberConverter2->toHexa() . PHP_EOL;
+            echo $calculator->formatTableHeader(["Entrée B", $number2]);
+            echo $calculator->formatTableRow(["Decimal", $numberConverter2->toDecimal()]);
+            echo $calculator->formatTableRow(["Binary", $numberConverter2->toBinary()]);
+            echo $calculator->formatTableRow(["Hexadecimal", $numberConverter2->toHexa()]);
             echo PHP_EOL;
         }
 
-        $output = [];
+        // Output for Bitwise Operations
+        $operationHeaders = ["Operation", "Result", "Binary"];
+        $operationRows = [];
+
         if (isset($results["AND"])) {
-            $output[] = "A ET B : " . $results["AND"] . " (" . decbin($results["AND"]) . ")";
+            $operationRows[] = ["A ET B", $results["AND"], decbin($results["AND"])];
         }
         if (isset($results["OR"])) {
-            $output[] = "A OU B : " . $results["OR"] . " (" . decbin($results["OR"]) . ")";
+            $operationRows[] = ["A OU B", $results["OR"], decbin($results["OR"])];
         }
         if (isset($results["XOR"])) {
-            $output[] = "A XOR B: " . $results["XOR"] . " (" . decbin($results["XOR"]) . ")";
+            $operationRows[] = ["A XOR B", $results["XOR"], decbin($results["XOR"])];
         }
         if (isset($results["NOT"])) {
-            $output[] = "NON A : " . $results["NOT"] . " (" . decbin($results["NOT"]) . ")";
+            $operationRows[] = ["NON A", $results["NOT"], decbin($results["NOT"])];
         }
-        // Only display shift operations if an explicit shift operator was used
         if ($operator === '<<' && isset($results["Shift Left"])) {
-            $output[] = "A SHL B: " . $results["Shift Left"] . " (" . decbin($results["Shift Left"]) . ")";
+            $operationRows[] = ["A SHL B", $results["Shift Left"], decbin($results["Shift Left"])];
         }
         if ($operator === '>>' && isset($results["Shift Right"])) {
-            $output[] = "A SHR B: " . $results["Shift Right"] . " (" . decbin($results["Shift Right"]) . ")";
+            $operationRows[] = ["A SHR B", $results["Shift Right"], decbin($results["Shift Right"])];
         }
 
-        echo implode(PHP_EOL, $output) . PHP_EOL;
+        if (!empty($operationRows)) {
+            echo $calculator->formatTableHeader($operationHeaders);
+            foreach ($operationRows as $row) {
+                echo $calculator->formatTableRow($row);
+            }
+            echo PHP_EOL;
+        }
     }
     
 } catch (Throwable $e) {

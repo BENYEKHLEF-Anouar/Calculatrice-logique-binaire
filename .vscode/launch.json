@@ -1,0 +1,34 @@
+// Prototype
+// {
+//     "version": "0.2.0",
+//     "configurations": [
+//         {
+//             "name": "Debug convert.php",
+//             "type": "php",
+//             "request": "launch",
+//             "program": "${workspaceFolder}/Prototype/bin/convert.php",
+//             "args": ["99"], // Example arguments, adjust as needed
+//             "cwd": "${workspaceFolder}",
+//             "port": 9003,
+//             "runtimeExecutable": "C:\\php\\php.exe"// Path to PHP CLI executable (adjust for your system, e.g., C:\php\php.exe on Windows)
+//         }
+//     ]
+// }
+
+
+// Realisation
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug calc.php",
+            "type": "php",
+            "request": "launch",
+            "program": "${workspaceFolder}/Realisation/bin/calc.php",
+            "args": ["9", "88"], // Example arguments, adjust as needed
+            "cwd": "${workspaceFolder}",
+            "port": 9003,
+            "runtimeExecutable": "C:\\php\\php.exe"// Path to PHP CLI executable (adjust for your system, e.g., C:\php\php.exe on Windows)
+        }
+    ]
+}

@@ -1,6 +1,6 @@
 {
-    "Decimal": 123456789,
-    "Binary": "111010110111100110100010101",
-    "Hexadecimal": "75BCD15",
-    "NOT": -123456790
+    "Decimal": 44,
+    "Binary": "101100",
+    "Hexadecimal": "2C",
+    "NOT": -45
 }

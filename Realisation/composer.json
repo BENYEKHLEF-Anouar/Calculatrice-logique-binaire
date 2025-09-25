@@ -7,7 +7,10 @@
         }
     },
     "scripts": {
-        "build": "echo 'Build process complete.'",
+        "build": [
+            "@composer dump-autoload -o",
+            "echo 'Build complete.'"
+        ],
         "validate": [
             "@php -l bin/calc.php",
             "@php -l src/Calculator.php",
@@ -17,12 +20,11 @@
         ],
         "save": [
             "@validate",
-            "echo 'Saving current state...'"
+            "php bin/calc.php 44 --jsonout"
         ],
         "calc": "php bin/calc.php",
         "clean": "php -r \"file_put_contents('samples/output.json', ''); echo 'Cleared samples/output.json\\n';\"",
-        "help": "php bin/calc.php --help",
-        "generate-samples": "php bin/calc.php 5 & 3 --jsonout && php -r \"file_put_contents('samples/input.json', json_encode(['number' => 5, 'operator' => '&', 'number2' => 3], JSON_PRETTY_PRINT));\""
+        "test": "php bin/calc.php --txtin"
     },
     "require": {
         "php": ">=8.2"
