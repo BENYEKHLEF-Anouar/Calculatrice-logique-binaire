@@ -20,7 +20,7 @@
         ],
         "save": [
             "@validate",
-            "php bin/calc.php --jsonout"
+            "php bin/calc.php 44 --jsonout"
         ],
         "calc": "php bin/calc.php",
         "clean": "php -r \"file_put_contents('samples/output.json', ''); echo 'Cleared samples/output.json\\n';\"",

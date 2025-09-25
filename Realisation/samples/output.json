@@ -1,6 +1,6 @@
 {
-    "Decimal": 5,
-    "Binary": "101",
-    "Hexadecimal": "5",
-    "AND": 0
+    "Decimal": 44,
+    "Binary": "101100",
+    "Hexadecimal": "2C",
+    "NOT": -45
 }
