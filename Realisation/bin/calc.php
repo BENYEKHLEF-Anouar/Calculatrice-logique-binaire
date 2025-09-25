@@ -70,6 +70,7 @@ try {
         }
         echo "Input successfully read from samples/input.txt" . PHP_EOL;
         error_log("DEBUG: number1: " . $number1 . ", operator: " . $operator . ", number2: " . $number2); // Debugging line
+
     } else { // Only parse command line arguments if --txtin is not present
         // Parse number1
         if (!isset($args[1]) || !is_numeric($args[1])) {
@@ -100,6 +101,7 @@ try {
                 } else {
                     throw new Exception("Invalid argument: " . $args[0]);
                 }
+
             } else if (count($args) >= 2) {
                 // If there are two or more arguments, assume operator and number2
                 $operator = $args[0];
@@ -162,6 +164,7 @@ try {
             default:
                 throw new Exception("Unknown operator: " . $operator);
         }
+
     } else if ($number2 !== null) {
         // If no operator is specified but two numbers are provided, perform all binary operations
         $results["AND"] = $calculator->bitwiseAnd();
@@ -180,6 +183,7 @@ try {
             throw new Exception("Failed to write to samples/output.json");
         }
         echo "Output successfully written to samples/output.json" . PHP_EOL;
+        
     } else {
         // Output for Number 1
         echo $calculator->formatTableHeader(["Entrée A", $number1]);
