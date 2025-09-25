@@ -16,13 +16,13 @@ if ($argc < 2 || in_array('--help', $argv, true)) {
     echo "  << (SHL)            Shift left by number2 bits\n";
     echo "  >> (SHR)            Shift right by number2 bits\n";
     echo "Options:\n";
-    echo "  --jsonin            Read input from input.json\n";
+    echo "  --txtin             Read input from input.txt\n";
     echo "  --jsonout           Output to output.json\n";
     exit(0);
 }
 
 try {
-    $isJsonIn = in_array("--jsonin", $argv, true);
+    $isTxtIn = in_array("--txtin", $argv, true);
     $isJsonOut = in_array("--jsonout", $argv, true);
 
     $number1 = null;
@@ -32,28 +32,20 @@ try {
 // Removes the flags --jsonin and --jsonout from $argv.
 // Leaves only the script name and the actual numbers/operators
     $args = array_values(array_filter($argv, function($arg) {
-        return !in_array($arg, ["--jsonin", "--jsonout"]);
+        return !in_array($arg, ["--txtin", "--jsonout"]);
     }));
 
-    if ($isJsonIn) {
-        $inputFile = 'samples/input.json';
+    if ($isTxtIn) {
+        $inputFile = 'samples/input.txt';
         if (!file_exists($inputFile)) {
-            throw new Exception("Input file samples/input.json not found");
+            throw new Exception("Input file samples/input.txt not found");
         }
-        $jsonInput = file_get_contents($inputFile);
-        $inputData = json_decode($jsonInput, true);
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new Exception("Invalid JSON in samples/input.json");
-        }
-        if (!isset($inputData['number']) || !is_int($inputData['number'])) {
-            throw new Exception("Input JSON must contain a valid 'number' integer in samples/input.json");
-        }
-        $number1 = $inputData['number'];
+        $number1 = (int) file_get_contents($inputFile);
         if ($number1 < 0) {
-            throw new Exception("Input JSON 'number' must be a positive integer in samples/input.json.");
+            throw new Exception("Input file 'number' must be a positive integer in samples/input.txt.");
         }
-        echo "Input successfully read from samples/input.json" . PHP_EOL;
-        // Remove the script name and --jsonin from args for further parsing
+        echo "Input successfully read from samples/input.txt" . PHP_EOL;
+        // Remove the script name and --txtin from args for further parsing
         array_shift($args); // remove script name (the first index)
     } else {
         // Parse number1
@@ -165,44 +157,53 @@ try {
         }
         echo "Output successfully written to samples/output.json" . PHP_EOL;
     } else {
-        echo "Entrée A : " . $number1 . PHP_EOL;
-        echo "Decimal     : " . $numberConverter1->toDecimal() . PHP_EOL;
-        echo "Binary      : " . $numberConverter1->toBinary() . PHP_EOL;
-        echo "Hexadecimal : " . $numberConverter1->toHexa() . PHP_EOL;
+        // Output for Number 1
+        echo $calculator->formatTableHeader(["Entrée A", $number1]);
+        echo $calculator->formatTableRow(["Decimal", $numberConverter1->toDecimal()]);
+        echo $calculator->formatTableRow(["Binary", $numberConverter1->toBinary()]);
+        echo $calculator->formatTableRow(["Hexadecimal", $numberConverter1->toHexa()]);
         echo PHP_EOL;
 
+        // Output for Number 2 if available
         if ($number2 !== null) {
             $numberConverter2 = new NumberConverter($number2);
-            echo "Entrée B : " . $number2 . PHP_EOL;
-            echo "Decimal     : " . $numberConverter2->toDecimal() . PHP_EOL;
-            echo "Binary      : " . $numberConverter2->toBinary() . PHP_EOL;
-            echo "Hexadecimal : " . $numberConverter2->toHexa() . PHP_EOL;
+            echo $calculator->formatTableHeader(["Entrée B", $number2]);
+            echo $calculator->formatTableRow(["Decimal", $numberConverter2->toDecimal()]);
+            echo $calculator->formatTableRow(["Binary", $numberConverter2->toBinary()]);
+            echo $calculator->formatTableRow(["Hexadecimal", $numberConverter2->toHexa()]);
             echo PHP_EOL;
         }
 
-        $output = [];
+        // Output for Bitwise Operations
+        $operationHeaders = ["Operation", "Result", "Binary"];
+        $operationRows = [];
+
         if (isset($results["AND"])) {
-            $output[] = "A ET B : " . $results["AND"] . " (" . decbin($results["AND"]) . ")";
+            $operationRows[] = ["A ET B", $results["AND"], decbin($results["AND"])];
         }
         if (isset($results["OR"])) {
-            $output[] = "A OU B : " . $results["OR"] . " (" . decbin($results["OR"]) . ")";
+            $operationRows[] = ["A OU B", $results["OR"], decbin($results["OR"])];
         }
         if (isset($results["XOR"])) {
-            $output[] = "A XOR B: " . $results["XOR"] . " (" . decbin($results["XOR"]) . ")";
+            $operationRows[] = ["A XOR B", $results["XOR"], decbin($results["XOR"])];
         }
         if (isset($results["NOT"])) {
-            $output[] = "NON A : " . $results["NOT"] . " (" . decbin($results["NOT"]) . ")";
+            $operationRows[] = ["NON A", $results["NOT"], decbin($results["NOT"])];
         }
-        // Only display shift operations if an explicit shift operator was used
         if ($operator === '<<' && isset($results["Shift Left"])) {
-            $output[] = "A SHL B: " . $results["Shift Left"] . " (" . decbin($results["Shift Left"]) . ")";
+            $operationRows[] = ["A SHL B", $results["Shift Left"], decbin($results["Shift Left"])];
         }
         if ($operator === '>>' && isset($results["Shift Right"])) {
-            $output[] = "A SHR B: " . $results["Shift Right"] . " (" . decbin($results["Shift Right"]) . ")";
+            $operationRows[] = ["A SHR B", $results["Shift Right"], decbin($results["Shift Right"])];
         }
 
-        // Joins all elements of $output into a single string.
-        echo implode(PHP_EOL, $output) . PHP_EOL; 
+        if (!empty($operationRows)) {
+            echo $calculator->formatTableHeader($operationHeaders);
+            foreach ($operationRows as $row) {
+                echo $calculator->formatTableRow($row);
+            }
+            echo PHP_EOL;
+        }
     }
     
 } catch (Throwable $e) {

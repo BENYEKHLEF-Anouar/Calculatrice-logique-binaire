@@ -8,7 +8,7 @@ Une interface en ligne de commande (CLI) PHP pour convertir des nombres entre le
 - Accepte deux entiers et applique les opérateurs logiques : ET (`&`), OU (`|`), XOR (`^`), NON (`~`), Décalage à gauche (`<<`), Décalage à droite (`>>`).
 - Affiche un tableau clair des résultats.
 - Valide les entrées (entiers positifs) et gère les erreurs.
-- Lecture de l'entrée depuis les arguments de la ligne de commande ou un fichier `samples/input.json`.
+- Lecture de l'entrée depuis les arguments de la ligne de commande ou un fichier `samples/input.txt`.
 - Sortie des résultats vers la console ou un fichier `samples/output.json`.
 
 ## Prérequis
@@ -171,24 +171,20 @@ NON A : -6 (11111111111111111111111111111010)
 
 ### Entrée/Sortie JSON
 
-#### Lecture depuis `samples/input.json`
+#### Lecture depuis `samples/input.txt`
 
-Un exemple de fichier d'entrée JSON est disponible à [`samples/input.json`](Realisation/samples/input.json).
-Il peut contenir les champs `number` (obligatoire), `operator` (optionnel) et `number2` (optionnel, requis si `operator` est binaire).
+Un exemple de fichier d'entrée texte est disponible à [`samples/input.txt`](Realisation/samples/input.txt).
+Il doit contenir un seul entier positif.
 
-Exemple de `samples/input.json`:
-```json
-{
-  "number": 5,
-  "operator": "&",
-  "number2": 3
-}
+Exemple de `samples/input.txt`:
+```
+5
 ```
 
-Pour l'utiliser, exécutez le script avec l'option `--jsonin` :
+Pour l'utiliser, exécutez le script avec l'option `--txtin` :
 
 ```bash
-php bin/calc.php --jsonin
+php bin/calc.php --txtin
 ```
 
 #### Écriture vers `samples/output.json`
@@ -201,10 +197,10 @@ php bin/calc.php 5 "&" 3 --jsonout
 
 Un exemple de fichier de sortie JSON est disponible à [`samples/output.json`](Realisation/samples/output.json).
 
-Vous pouvez également combiner l'entrée et la sortie JSON :
+Vous pouvez également combiner l'entrée texte et la sortie JSON :
 
 ```bash
-php bin/calc.php --jsonin --jsonout
+php bin/calc.php --txtin --jsonout
 ```
 
 ### Scripts Composer
@@ -226,7 +222,7 @@ Les scripts Composer suivants sont disponibles pour faciliter le développement 
 - `src/NumberConverter.php`: Implémente `ConverterInterface` et fournit la logique de conversion.
 - `src/formatterTrait.php`: Un trait pour formater les chaînes de sortie.
 - `composer.json`: Dépendances et scripts du projet.
-- `samples/input.json`: Fichier par défaut pour l'entrée JSON.
+- `samples/input.txt`: Fichier par défaut pour l'entrée texte.
 - `samples/output.json`: Fichier par défaut pour la sortie JSON.
 
 ## Licence
