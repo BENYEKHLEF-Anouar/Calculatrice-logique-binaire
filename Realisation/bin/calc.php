@@ -5,13 +5,6 @@ require __DIR__ . '/../vendor/autoload.php';
 use App\Calculator;
 use App\NumberConverter;
 
-<?php
-
-require __DIR__ . '/../vendor/autoload.php';
-
-use App\Calculator;
-use App\NumberConverter;
-
 // Display help message if no arguments or --help flag is present
 if ($argc < 2 || in_array('--help', $argv, true)) {
     echo "Usage: php bin/calc.php <number1> [operator] [<number2>] [options]\n";
