@@ -3,3 +3,5 @@
   "operator": "&",
   "number2": 3
 }
+
+39
