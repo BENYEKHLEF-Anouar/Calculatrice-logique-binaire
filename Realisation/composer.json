@@ -18,7 +18,7 @@
       "@php -l src/FormatterTrait.php",
       "@php -l src/NumberConverter.php"
     ],
-    "save": "php bin/calc.php 200 --jsonout",
+    "save": "php bin/calc.php --input=data/sample.json --output=out.json --mode=batch",
     "calc": "php bin/calc.php",
     "clean": [
       "php -r \"file_put_contents('samples/output.json', '');\"",
