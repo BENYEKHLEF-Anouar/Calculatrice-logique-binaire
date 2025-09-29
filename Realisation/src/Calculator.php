@@ -5,47 +5,55 @@ namespace App;
 use App\FormatterTrait;
 // use App\NumberConverter;
 
-class Calculator {
+class Calculator
+{
     use FormatterTrait;
 
     private int $number1;
     private ?int $number2; //integer or null
 
-    public function __construct(int $number1, ?int $number2 = null) {
+    public function __construct(int $number1, ?int $number2 = null)
+    {
         $this->number1 = $number1;
         $this->number2 = $number2;
     }
 
-    public function getNumber1(): int {
+    public function getNumber1(): int
+    {
         return $this->number1;
     }
 
-    public function getNumber2(): ?int {
+    public function getNumber2(): ?int
+    {
         return $this->number2;
     }
 
-    public function bitwiseAnd(): int {
+    public function bitwiseAnd(): int
+    {
         if ($this->number2 === null) {
             throw new \InvalidArgumentException("Bitwise AND requires a second number.");
         }
         return $this->number1 & $this->number2;
     }
 
-    public function bitwiseOr(): int {
+    public function bitwiseOr(): int
+    {
         if ($this->number2 === null) {
             throw new \InvalidArgumentException("Bitwise OR requires a second number.");
         }
         return $this->number1 | $this->number2;
     }
 
-    public function bitwiseXor(): int {
+    public function bitwiseXor(): int
+    {
         if ($this->number2 === null) {
             throw new \InvalidArgumentException("Bitwise XOR requires a second number.");
         }
         return $this->number1 ^ $this->number2;
     }
 
-    public function bitwiseNot(): int {
+    public function bitwiseNot(): int
+    {
         return ~$this->number1;
     }
 
@@ -57,4 +65,36 @@ class Calculator {
     //         "Hexadecimal" => $converter->toHexa(),
     //     ];
     // }
+    // public function getConversions(int $number): array {
+    //     $converter = new NumberConverter($number);
+    //     return [
+    //         "Decimal" => $converter->toDecimal(),
+    //         "Binary" => $converter->toBinary(),
+    //         "Hexadecimal" => $converter->toHexa(),
+    //     ];
+    // }
+
+
+    //     public function getNumber1(): int {
+    //     return $this->number1;
+    // }
+
+    // public function getNumber2(): ?int {
+    //     return $this->number2;
+    // }
+
+    //     public function setNumber1(int $number): void {
+    //     $this->number1 = $number;
+    // }
+
+    // public function setNumber2(?int $number): void {
+    //     $this->number2 = $number;
+    // }
+
+    // echo $calc->getNumber1(); // 10
+    // echo $calc->getNumber2(); // 5
+
+    // // Modify values
+    // $calc->setNumber1(20);
+    // $calc->setNumber2(15);
 }
